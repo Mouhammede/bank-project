@@ -1,0 +1,46 @@
+#bo{
+    background-color: white;
+}
+img{
+    height: 50px;
+    width: 50px;
+}
+p{
+    font-size: xx-large;
+    color: rgb(41, 182, 88);
+    font-weight: bold;
+}
+#title{
+    align-items: center;
+    text-align: center;
+    width: 200px;
+    height: 50px;
+    display: flex;
+    gap: 0px;
+    background-color: rgba(255, 0, 0, 0);
+    margin-left: 10px;
+}
+#tollbar{
+    text-align: center;
+    align-items: center;
+    width: 200px;
+    height: 1000px;
+    background-color: rgb(230, 236, 243);
+    border-radius: 20px;
+}
+.but{
+    font-size: large;
+    font-weight: bold;
+    width: 100%;
+    border-radius: 50px;
+    transition-property: background;
+    transition-duration: 777ms;
+    border-color: transparent;
+    color: rgb(46, 46, 46);
+    
+    background-color: rgb(230, 230, 230);
+}
+.but:hover{
+    background-color: rgb(190, 190, 190);
+    
+}

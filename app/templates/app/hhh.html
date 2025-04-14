@@ -1,0 +1,21 @@
+{% extends "app/index.html" %}
+{% block a %}
+    {% for i in k %}
+        <h1>{{ i.name }}</h1>
+        <p>{{ i.familyname }}</p>
+        <p>{{ i.age }}</p>
+        <br>
+    {% endfor %}
+    <pre style="background-color: blueviolet; color: white;">Lorem ipsum dolor sit amet consectetur, 
+        adipisicing elit. Eligendi voluptatibus, 
+        mollitia ratione repudiandae dolorem sequi 
+        accusamus iure velit numquam? 
+        Molestias esse deserunt praesentium 
+        laborum molestiae omnis 
+        corporis accusantium pariatur repellat?
+    </pre>
+    <br><br>
+    <a href="{% url 'o' %}">
+        <button class="but">aaa</button>
+    </a>
+{% endblock a %}

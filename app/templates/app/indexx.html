@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wallet</title>
+    <link rel="stylesheet" href="{% static 'app/styly.css' %}">
+    <link rel="icon" type="image/.png" href="{% static 'app/logo.png' %}">
+</head>
+<body>
+    <div id="d1">
+        <h1>Wlecome</h1>
+        <div id="d2">
+            <form method="post">
+                {% csrf_token %}
+                <label class="l" for="un">social security number</label>
+                <br>
+                <input type="text" id="un" required placeholder="social security number" name="ssn">
+                <br>
+                <br>
+                <label class="l" for="up">Password</label>
+                <br>
+                <input type="password" id="up" required placeholder="Password" name="password">
+                <br>
+                <br>
+                <!--<input type="submit" id="sb" value="login">-->
+                <button type="submit" id="sb">login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
