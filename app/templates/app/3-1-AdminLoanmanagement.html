@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Bank - Loan Requests</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Updated configuration to include Tailwind colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'maze-green': {
+                            DEFAULT: '#0F3E2A', 
+                            light: '#1C5E40',  
+                            900: '#0F3E2A',
+                            950: '#0A2B1E'
+                        }
+                    }
+                }
+            }
+        }
+
+        // JavaScript for toggling loan request details
+        function toggleLoanDetails(loanId) {
+            const detailsRow = document.getElementById(`details-${loanId}`);
+            const mainRow = document.getElementById(`main-${loanId}`);
+            
+            if (detailsRow.classList.contains('hidden')) {
+                detailsRow.classList.remove('hidden');
+                mainRow.classList.add('bg-gray-100');
+            } else {
+                detailsRow.classList.add('hidden');
+                mainRow.classList.remove('bg-gray-100');
+            }
+        }
+
+        // Function to handle loan approval or rejection
+        function handleLoanAction(loanId, action) {
+            event.stopPropagation(); // Prevent row toggle when clicking buttons
+            
+            // In a real app, this would make an API call
+            alert(`Loan #${loanId} has been ${action === 'approve' ? 'approved' : 'rejected'}`);
+            
+            // Update UI to show the action has been taken
+            const statusBadge = document.getElementById(`status-${loanId}`);
+            const actionButtons = document.getElementById(`actions-${loanId}`);
+            
+            if (action === 'approve') {
+                statusBadge.innerHTML = 'Approved';
+                statusBadge.className = 'px-2 py-1 rounded-full text-xs bg-green-100 text-green-800';
+            } else {
+                statusBadge.innerHTML = 'Rejected';
+                statusBadge.className = 'px-2 py-1 rounded-full text-xs bg-red-100 text-red-800';
+            }
+            
+            // Hide action buttons after decision
+            actionButtons.innerHTML = '<span class="text-gray-500 text-sm italic">Processed</span>';
+        }
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar with Loan Management section -->
+        <div class="w-full md:w-64 bg-maze-green-950 text-white p-4 md:p-6">
+            <div class="flex items-center mb-8">
+                <div class="w-10 h-10 flex items-center justify-center bg-white rounded-full mr-3 shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-maze-green-900">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold">TRUST Finance</h1>
+            </div>
+                        
+            <nav class="space-y-2">
+            <!-- Client Management -->
+                <div class="flex items-center p-3 hover:bg-maze-green-900 rounded-md cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 0 1 8 0zM3 20a6 6 0 0 1 12 0v1H3v-1z"></path>
+                    </svg>
+                    Create Client
+                </div>
+
+                <div class="flex items-center p-3 hover:bg-maze-green-900 rounded-md cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 1 0 0 5.292M15 21H3v-1a6 6 0 0 1 12 0v1zm0 0h6v-1a6 6 0 0 0-9-5.197M13 7a4 4 0 1 0-8 0 4 4 0 0 0 8 0z"></path>
+                    </svg>
+                    Clients
+                </div>
+
+                <!-- Loan Management Section -->
+                <div class="pt-4 pb-2">
+                    <p class="text-gray-400 text-xs uppercase font-semibold pl-3">Loan Management</p>
+                </div>
+
+                <div class="flex items-center p-3 bg-maze-green-900 rounded-md cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"></path>
+                    </svg>
+                    Loan Requests
+                </div>
+
+                <div class="flex items-center p-3 hover:bg-maze-green-900 rounded-md cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9l2 2 4-4"></path>
+                    </svg>
+                    Active Loans
+                </div>
+
+                <!-- Profile Section -->
+                <div class="pt-4 pb-2">
+                    <p class="text-gray-400 text-xs uppercase font-semibold pl-3">Profile</p>
+                </div>
+                <div class="flex items-center p-3 hover:bg-maze-green-900 rounded-md cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    Profile
+                </div>
+
+                <div class="pt-4">
+                    <div class="flex items-center p-3 hover:bg-maze-green-900 rounded-md cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1"></path>
+                        </svg>
+                        Logout
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Loan Requests</h2>
+                    <div class="flex gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">Pending</span>
+                            <span class="text-sm text-gray-500">4</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">Approved</span>
+                            <span class="text-sm text-gray-500">2</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 rounded-full text-xs bg-red-100 text-red-800">Rejected</span>
+                            <span class="text-sm text-gray-500">1</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Filter Options -->
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <div class="flex-1">
+                        <input 
+                            type="text" 
+                            placeholder="Search by name or ID..." 
+                            class="w-full py-2 px-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-maze-green"
+                        >
+                    </div>
+                    <select class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-maze-green">
+                        <option value="all">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <select class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-maze-green">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="amount-high">Amount (High to Low)</option>
+                        <option value="amount-low">Amount (Low to High)</option>
+                    </select>
+                </div>
+
+                <!-- Loan Requests Table -->
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 border-b">
+                            <th class="text-left p-3">Request ID</th>
+                            <th class="text-left p-3">Name</th>
+                            <th class="text-left p-3">Amount</th>
+                            <th class="text-left p-3">Date</th>
+                            <th class="text-left p-3">Status</th>
+                            <th class="text-left p-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loan Request 1 -->
+                        <tr id="main-L001" class="border-b hover:bg-gray-50 cursor-pointer" onclick="toggleLoanDetails('L001')">
+                            <td class="p-3">LR001</td>
+                            <td class="p-3">James Peters</td>
+                            <td class="p-3">$15,000</td>
+                            <td class="p-3">Apr 12, 2025</td>
+                            <td class="p-3">
+                                <span id="status-L001" class="px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">Pending</span>
+                            </td>
+                            <td class="p-3" id="actions-L001">
+                                <div class="flex gap-2">
+                                    <button onclick="handleLoanAction('L001', 'approve')" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">Approve</button>
+                                    <button onclick="handleLoanAction('L001', 'reject')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Expanded Details for Loan Request 1 -->
+                        <tr id="details-L001" class="hidden">
+                            <td colspan="6" class="p-4 bg-gray-50">
+                                <div class="grid grid-cols-2 gap-8">
+                                    <div>
+                                        <h3 class="font-bold mb-3">Loan Details</h3>
+                                        <div class="grid grid-cols-2 gap-y-2">
+                                            <p class="text-gray-600">Purpose:</p>
+                                            <p>Home Renovation</p>
+                                            <p class="text-gray-600">Requested Amount:</p>
+                                            <p>$15,000</p>
+                                            <p class="text-gray-600">Term:</p>
+                                            <p>36 months</p>
+                                            <p class="text-gray-600">Monthly Payment:</p>
+                                            <p>$478.32</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <h3 class="font-bold mb-3">Information</h3>
+                                        <div class="grid grid-cols-2 gap-y-2">
+                                            <p class="text-gray-600">Rip:</p>
+                                            <p>CL001</p>
+                                            <p class="text-gray-600">Name:</p>
+                                            <p>James Peters</p>
+                                            <p class="text-gray-600">Email:</p>
+                                            <p>james.peters@example.com</p>
+                                            <p class="text-gray-600">Phone:</p>
+                                            <p>(555) 123-4567</p>
+                                            <p class="text-gray-600">Current Balance:</p>
+                                            <p>$16,700</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 flex justify-end gap-3">
+                                    <button onclick="handleLoanAction('L001', 'reject')" class="bg-white border border-red-500 text-red-500 hover:bg-red-50 px-4 py-2 rounded">Reject Request</button>
+                                    <button onclick="handleLoanAction('L001', 'approve')" class="bg-maze-green text-white px-4 py-2 rounded hover:bg-maze-green-light">Approve Request</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Loan Request 2 -->
+                        <tr id="main-L002" class="border-b hover:bg-gray-50 cursor-pointer" onclick="toggleLoanDetails('L002')">
+                            <td class="p-3">LR002</td>
+                            <td class="p-3">Emily Johnson</td>
+                            <td class="p-3">$8,500</td>
+                            <td class="p-3">Apr 10, 2025</td>
+                            <td class="p-3">
+                                <span id="status-L002" class="px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">Pending</span>
+                            </td>
+                            <td class="p-3" id="actions-L002">
+                                <div class="flex gap-2">
+                                    <button onclick="handleLoanAction('L002', 'approve')" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">Approve</button>
+                                    <button onclick="handleLoanAction('L002', 'reject')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Expanded Details for Loan Request 2 -->
+                        <tr id="details-L002" class="hidden">
+                            <td colspan="6" class="p-4 bg-gray-50">
+                                <div class="grid grid-cols-2 gap-8">
+                                    <div>
+                                        <h3 class="font-bold mb-3">Loan Details</h3>
+                                        <div class="grid grid-cols-2 gap-y-2">
+                                            <p class="text-gray-600">Purpose:</p>
+                                            <p>Debt Consolidation</p>
+                                            <p class="text-gray-600">Requested Amount:</p>
+                                            <p>$8,500</p>
+                                            <p class="text-gray-600">Term:</p>
+                                            <p>24 months</p>
+                                            <p class="text-gray-600">Monthly Payment:</p>
+                                            <p>$385.40</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <h3 class="font-bold mb-3">Information</h3>
+                                        <div class="grid grid-cols-2 gap-y-2">
+                                            <p class="text-gray-600">Rip:</p>
+                                            <p>CL002</p>
+                                            <p class="text-gray-600">Name:</p>
+                                            <p>Emily Johnson</p>
+                                            <p class="text-gray-600">Email:</p>
+                                            <p>emily.johnson@example.com</p>
+                                            <p class="text-gray-600">Phone:</p>
+                                            <p>(555) 987-6543</p>
+                                            <p class="text-gray-600">Current Balance:</p>
+                                            <p>$24,500</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 flex justify-end gap-3">
+                                    <button onclick="handleLoanAction('L002', 'reject')" class="bg-white border border-red-500 text-red-500 hover:bg-red-50 px-4 py-2 rounded">Reject Request</button>
+                                    <button onclick="handleLoanAction('L002', 'approve')" class="bg-maze-green text-white px-4 py-2 rounded hover:bg-maze-green-light">Approve Request</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Loan Request 3 (Already Approved) -->
+                        <tr id="main-L003" class="border-b hover:bg-gray-50 cursor-pointer" onclick="toggleLoanDetails('L003')">
+                            <td class="p-3">LR003</td>
+                            <td class="p-3">Michael Smith</td>
+                            <td class="p-3">$25,000</td>
+                            <td class="p-3">Apr 5, 2025</td>
+                            <td class="p-3">
+                                <span id="status-L003" class="px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">Approved</span>
+                            </td>
+                            <td class="p-3" id="actions-L003">
+                                <span class="text-gray-500 text-sm italic">Processed</span>
+                            </td>
+                        </tr>
+                        <!-- Expanded Details for Loan Request 3 -->
+                        <tr id="details-L003" class="hidden">
+                            <td colspan="6" class="p-4 bg-gray-50">
+                                <div class="grid grid-cols-2 gap-8">
+                                    <div>
+                                        <h3 class="font-bold mb-3">Loan Details</h3>
+                                        <div class="grid grid-cols-2 gap-y-2">
+                                            <p class="text-gray-600">Purpose:</p>
+                                            <p>Business Expansion</p>
+                                            
+                                            <p class="text-gray-600">Approved Amount:</p>
+                                            <p>$25,000</p>
+                                            
+                                            <p class="text-gray-600">Term:</p>
+                                            <p>48 months</p>
+                                            
+                                            <p class="text-gray-600">Monthly Payment:</p>
+                                            <p>$610.25</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <h3 class="font-bold mb-3">Information</h3>
+                                        <div class="grid grid-cols-2 gap-y-2">
+                                            <p class="text-gray-600">Rip:</p>
+                                            <p>CL003</p>
+                                            
+                                            <p class="text-gray-600">Name:</p>
+                                            <p>Michael Smith</p>
+                                            
+                                            <p class="text-gray-600">Email:</p>
+                                            <p>michael.smith@example.com</p>
+                                            
+                                            <p class="text-gray-600">Phone:</p>
+                                            <p>(555) 456-7890</p>
+                                            
+                                            <p class="text-gray-600">Current Balance:</p>
+                                            <p>$42,300</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center mt-4">
+                                    <div class="border-l pl-6 ml-6">
+                                        <h3 class="font-bold mb-2">Approved By</h3>
+                                        <p class="text-gray-800">Sarah Johnson</p>
+                                        <p class="text-gray-600 text-sm">Cashier</p>
+                                        <p class="text-gray-600 text-sm">Apr 8, 2025 at 10:34 AM</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

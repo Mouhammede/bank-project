@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance Bank - Cashier Transaction Approval</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'maze-green': {
+                            900: '#0F3E2A',
+                            950: '#0A2B1E'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-maze-green-950 text-white p-6">
+            <div class="flex items-center mb-8">
+                <div class="w-10 h-10 flex items-center justify-center bg-white rounded-full mr-3 shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-maze-green-900">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold">TRUST Finance</h1>
+            </div>
+            <nav class="space-y-2">
+                <div class="flex items-center p-3 hover:bg-maze-green-900 rounded-md cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    Dashboard
+                </div>
+                <!-- Transaction box (highlighted for current page) -->
+                <div class="flex items-center p-3 bg-maze-green-900 rounded-md cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                    </svg>
+                    Transaction
+                </div>
+                <div class="flex items-center p-3 hover:bg-maze-green-900 rounded-md cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    Profile
+                </div>
+                <div class="flex items-center p-3 hover:bg-maze-green-900 rounded-md cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    Logout
+                </div>
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div class="flex-1 flex items-center justify-center">
+            <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+                <h2 class="text-xl font-bold mb-4">Approve Deposit/Withdraw</h2>
+                <!-- Transaction Code Input -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Enter Transaction Code</label>
+                    <div class="flex gap-2">
+                        <input id="transaction-code-input" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter code...">
+                        <button onclick="showTransactionPopup()" class="bg-maze-green-900 text-white px-4 py-2 rounded">Check</button>
+                    </div>
+                </div>
+                <div id="request-info" class="mt-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Popup Modal -->
+    <div id="transaction-popup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
+            <button onclick="closeTransactionPopup()" class="absolute top-2 right-4 text-gray-500 text-xl">&times;</button>
+            <h2 class="text-xl font-bold mb-4 text-maze-green-900">Transaction Details</h2>
+            <div id="transaction-details" class="space-y-2 mb-4">
+                <!-- Populated by JS -->
+            </div>
+            <button id="accept-transaction-btn" class="w-full bg-maze-green-900 hover:bg-maze-green-950 text-white font-semibold py-2 rounded">Accept Transaction</button>
+        </div>
+    </div>
+
+    <script>
+        // Example transaction lookup (replace with real backend call)
+        const mockTransactions = {
+            'TX1234': {
+                clientId: 'CL001',
+                firstName: 'James',
+                lastName: 'Peters',
+                type: 'Deposit',
+                rip: '1234567890',
+                amount: '$1,500',
+                date: '2025-05-02'
+            },
+            'TX5678': {
+                clientId: 'CL002',
+                firstName: 'Emily',
+                lastName: 'Johnson',
+                type: 'Withdraw',
+                rip: '9876543210',
+                amount: '$500',
+                date: '2025-05-01'
+            }
+        };
+
+        function showTransactionPopup() {
+            const code = document.getElementById('transaction-code-input').value.trim();
+            const tx = mockTransactions[code]; // Replace with backend fetch
+            const popup = document.getElementById('transaction-popup');
+            const details = document.getElementById('transaction-details');
+            if (tx) {
+                details.innerHTML = `
+                    <div><strong>Client ID:</strong> ${tx.clientId}</div>
+                    <div><strong>First Name:</strong> ${tx.firstName}</div>
+                    <div><strong>Last Name:</strong> ${tx.lastName}</div>
+                    <div><strong>Type:</strong> ${tx.type}</div>
+                    <div><strong>Rip:</strong> ${tx.rip}</div>
+                    <div><strong>Amount:</strong> ${tx.amount}</div>
+                    <div><strong>Date:</strong> ${tx.date}</div>
+                `;
+                popup.classList.remove('hidden');
+            } else {
+                details.innerHTML = '<div class="text-red-600">Transaction not found.</div>';
+                popup.classList.remove('hidden');
+                document.getElementById('accept-transaction-btn').style.display = 'none';
+                return;
+            }
+            document.getElementById('accept-transaction-btn').style.display = 'block';
+        }
+
+        function closeTransactionPopup() {
+            document.getElementById('transaction-popup').classList.add('hidden');
+        }
+
+        document.getElementById('accept-transaction-btn')?.addEventListener('click', function() {
+            alert('Transaction accepted!');
+            closeTransactionPopup();
+        });
+
+        function findRequest() {
+            const code = document.getElementById('tx-code').value.trim().toUpperCase();
+            const infoDiv = document.getElementById('request-info');
+            let requests = JSON.parse(localStorage.getItem('pendingRequests') || '[]');
+            const req = requests.find(r => r.code === code && r.status === "pending");
+            if (!req) {
+                infoDiv.innerHTML = '<div class="text-red-600">No pending request found for this code.</div>';
+                return;
+            }
+            infoDiv.innerHTML = `
+                <div class="mb-2"><b>Client:</b> ${req.client.name} (${req.client.id})</div>
+                <div class="mb-2"><b>Type:</b> ${req.type.charAt(0).toUpperCase() + req.type.slice(1)}</div>
+                <div class="mb-2"><b>Amount:</b> $${req.amount.toFixed(2)}</div>
+                <div class="flex gap-2 mt-4">
+                    <button onclick="approveRequest('${req.code}')" class="bg-green-600 text-white px-4 py-2 rounded">Accept</button>
+                    <button onclick="rejectRequest('${req.code}')" class="bg-red-600 text-white px-4 py-2 rounded">Reject</button>
+                </div>
+            `;
+        }
+
+        function approveRequest(code) {
+            let requests = JSON.parse(localStorage.getItem('pendingRequests') || '[]');
+            const idx = requests.findIndex(r => r.code === code && r.status === "pending");
+            if (idx === -1) return;
+            let req = requests[idx];
+            // Update balance (for demo, store in localStorage by client id)
+            let balances = JSON.parse(localStorage.getItem('clientBalances') || '{}');
+            let bal = balances[req.client.id] || 0;
+            if (req.type === 'deposit') {
+                bal += req.amount;
+            } else if (req.type === 'withdraw') {
+                if (bal < req.amount) {
+                    alert("Insufficient balance for withdrawal.");
+                    return;
+                }
+                bal -= req.amount;
+            }
+            balances[req.client.id] = bal;
+            localStorage.setItem('clientBalances', JSON.stringify(balances));
+            requests[idx].status = "completed";
+            localStorage.setItem('pendingRequests', JSON.stringify(requests));
+            document.getElementById('request-info').innerHTML = '<div class="text-green-600">Request accepted and processed.</div>';
+        }
+
+        function rejectRequest(code) {
+            let requests = JSON.parse(localStorage.getItem('pendingRequests') || '[]');
+            const idx = requests.findIndex(r => r.code === code && r.status === "pending");
+            if (idx === -1) return;
+            requests[idx].status = "rejected";
+            localStorage.setItem('pendingRequests', JSON.stringify(requests));
+            document.getElementById('request-info').innerHTML = '<div class="text-red-600">Request rejected.</div>';
+        }
+    </script>
+</body>
+</html>
